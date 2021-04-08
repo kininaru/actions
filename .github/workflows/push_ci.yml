@@ -11,8 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Checkout Branch
-    
-    steps:
+
       - name: Test step 1
         run: |
           mkdir xbqtest233
