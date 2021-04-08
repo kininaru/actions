@@ -14,5 +14,4 @@ jobs:
 
       - name: Test step 1
         run: |
-        git clone 
           mkdir xbqtest233
