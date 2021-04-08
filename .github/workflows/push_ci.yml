@@ -16,9 +16,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12'
-      - run: cd casnode-website
-      - run: npm install
-      - run: npm run build
+      - run: cd casnode-website && npm install && npm run build
       
       - name: Deploy to netlify
         uses: netlify/actions/cli@master
