@@ -1,5 +1,6 @@
 project_identifier_env: CROWDIN_DOCUSAURUS_PROJECT_ID
-api_key_env: CROWDIN_DOCUSAURUS_API_KEY
+apt_token: CROWDIN_DOCUSAURUS_API_KEY
+project_id: KininaruActions
 
 base_path: "./"
 preserve_hierarchy: true
