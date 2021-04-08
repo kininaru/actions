@@ -9,7 +9,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: - uses: actions/checkout@v2
+      - name: clone
+
       - name: Test step 1
         run: |
+        git clone 
           mkdir xbqtest233
 
