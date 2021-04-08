@@ -11,8 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: To project dir
-        run:
 
+    steps:
       - name: Test step 1
         run: |
           mkdir xbqtest233
