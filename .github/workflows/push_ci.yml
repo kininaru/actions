@@ -1,4 +1,4 @@
-name: test ci
+name: Node.js CI
 
 on:
   push
@@ -6,22 +6,43 @@ on:
 jobs:
   deploy:
 
+    env:
+      CROWDIN_DOCUSAURUS_API_KEY: ${{ secrets.CROWDIN_DOCUSAURUS_API_KEY }}
+      CROWDIN_DOCUSAURUS_PROJECT_ID: ${{ secrets.CROWDIN_DOCUSAURUS_PROJECT_ID }}
+      CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+      CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+      GH_EMAIL: ${{ secrets.GH_EMAIL }}
+      GH_NAME: ${{ secrets.GH_NAME }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    strategy:
+      matrix:
+        node-version: [ 12.x ]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
-      - name: Setup node and npm build
-        uses: actions/setup-node@v1
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
         with:
-          node-version: '12'
-      - run: cd casnode-website && npm install && npm run build
-      
-      - name: Deploy to netlify
-        uses: netlify/actions/cli@master
+          node-version: ${{ matrix.node-version }}
+
+      - name: Init Website
+        run: |
+          git config --global user.name "${GH_NAME}"
+          git config --global user.email "${GH_EMAIL}"
+          echo "machine github.com login ${GH_NAME} password ${GH_TOKEN}" > ~/.netrc
+          cd casnode-website && yarn install && yarn run write-translations && cd ..
+      - name: Crowdin Action
+        uses: crowdin/github-action@1.0.18
         with:
-          args: deploy --dir=public --prod
-        env:
-          NETLIFY_SITE_ID: ${{ secrets.DEV_NETLIFY_SITE_ID }}
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          download_translations: true
+          config: crowdin.yaml
+          crowdin_branch_name: master
+          create_pull_request: false
+
+      - name: Deploy Website
+        run: cd casnode-website && yarn install && GIT_USER="${GH_NAME}" yarn run publish-gh-pages
