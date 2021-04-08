@@ -11,6 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Checkout Branch
+        uses: actions/setup-node@master
 
       - name: Test step 1
         run: |
