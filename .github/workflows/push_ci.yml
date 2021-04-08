@@ -15,3 +15,4 @@ jobs:
       - name: Test step 1
         run: |
           mkdir xbqtest233
+          ls
