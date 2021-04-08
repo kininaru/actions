@@ -9,10 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
-      - name: To project dir
-
-    steps:
       - name: Test step 1
         run: |
           mkdir xbqtest233
